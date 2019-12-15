@@ -1,4 +1,3 @@
-console.log("loaded");
 $(document).ready(function() {
   let total = Number($("#fund-total-wrap").attr("data-fund-total"));
 
@@ -61,8 +60,6 @@ const handleSell = function(total, purchased) {
       } else {
         alert("You don't have this item");
       }
-
-      console.table(purchased);
 
       handleTotal(total, purchased);
       handleShoppingCart(purchased);
