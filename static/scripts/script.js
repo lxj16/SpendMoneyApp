@@ -1,43 +1,72 @@
 console.log("loaded");
+$(document).ready(function() {
+  let total = Number($("#fund-total-wrap").attr("data-fund-total"));
+
+  let purchased = {};
+  handleShoppingCart(purchased);
+  handleBuy(total, purchased);
+  handleSell(total, purchased);
+});
+
 const handleBuy = function(total, purchased) {
-  //   $(".product-buy").click(function() {
-  //     const product_name = $(this)
-  //       .parents(".product-wrapper")
-  //       .find(".product-title")
-  //       .text();
-  //     console.log("product =", product_name);
-  //   });
   $(".product-buy").click(function() {
-    const quantity = $(this)
+    let quantity = $(this)
       .parent()
       .find(".product-input")
       .val();
 
-    const name = $(this)
-      .parent()
-      .attr("data-key");
-    const price = $(this)
-      .parent()
-      .attr("data-price");
-    console.log("buy", name, price);
-
-    const subTotal = price * quantity;
-    console.log(subTotal);
-
-    if (purchased[name]) {
-      purchased[name]["quantity"] =
-        Number(purchased[name]["quantity"]) + Number(quantity);
+    if (quantity <= 0) {
+      alert("Input a valid number");
     } else {
-      purchased[name] = {
-        name: name,
-        price: price,
-        quantity: quantity
-      };
-    }
-    console.table(purchased);
+      const name = $(this)
+        .parent()
+        .attr("data-key");
+      const price = $(this)
+        .parent()
+        .attr("data-price");
 
-    handleTotal(total, -subTotal);
-    handleShoppingCart(purchased);
+      if (purchased[name]) {
+        purchased[name]["quantity"] =
+          Number(purchased[name]["quantity"]) + Number(quantity);
+      } else {
+        purchased[name] = {
+          name: name,
+          price: price,
+          quantity: quantity
+        };
+      }
+
+      handleTotal(total, purchased);
+      handleShoppingCart(purchased);
+    }
+  });
+};
+const handleSell = function(total, purchased) {
+  $(".product-sell").click(function() {
+    let quantity = $(this)
+      .parent()
+      .find(".product-input")
+      .val();
+
+    if (quantity <= 0) {
+      alert("Input a valid number");
+    } else {
+      const name = $(this)
+        .parent()
+        .attr("data-key");
+
+      if (purchased[name]) {
+        purchased[name]["quantity"] =
+          Number(purchased[name]["quantity"]) - Number(quantity);
+      } else {
+        alert("You don't have this item");
+      }
+
+      console.table(purchased);
+
+      handleTotal(total, purchased);
+      handleShoppingCart(purchased);
+    }
   });
 };
 
@@ -47,17 +76,29 @@ const handleShoppingCart = function(purchased) {
   } else {
     $(".shopping-cart").show();
   }
+
+  for (let key in purchased) {
+    if (purchased[key].quantity === 0) {
+      delete purchased[key];
+    }
+  }
+  let htmlContent = "";
+  console.log(purchased);
+  for (let key in purchased) {
+    htmlContent += `<li>${key}, $${purchased[key].price}, ${purchased[key].quantity}</li>`;
+  }
+  $(".shopping-cart ul").html(htmlContent);
 };
 
-const handleTotal = function(total, diff) {
-  total += diff;
-  console.log("new total:", total);
+const handleTotal = function(total, purchased) {
+  let diff = 0;
+
+  for (let key in purchased) {
+    diff += Number(purchased[key].price) * Number(purchased[key].quantity);
+  }
+  total -= diff;
+  console.log(total);
+  console.log(diff);
+  $("#fund-total-wrap").attr("data-fund-total", total);
+  $("#fund-total-wrap").html(`$${total} left`);
 };
-
-$(document).ready(function() {
-  let total = 1000000;
-
-  let purchased = {};
-  handleShoppingCart(purchased);
-  handleBuy(total, purchased);
-});

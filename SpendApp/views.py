@@ -5,6 +5,6 @@ from .models import Product
 
 
 def index(request):
-    product_name = Product.objects.all()
-    product_dict = {'product': product_name}
-    return render(request, 'SpendApp/index.html', context={product_dict})
+    fund_total = 90000000000
+    context = {'products': Product.objects.all(), 'fund_total': fund_total}
+    return render(request, 'SpendApp/spend.html', context)

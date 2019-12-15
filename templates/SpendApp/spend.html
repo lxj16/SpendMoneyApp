@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {});
+    </script>
+    <script src="{%static 'scripts\script.js'%}"></script>
+    <link rel="stylesheet" href="{%static 'css\style.css'%}" />
+  </head>
+
+  <body>
+    <div id="root">
+      <div class="container">
+        <h1>
+          <img
+            src="https://neal.fun//Spend/billgates.png"
+            class="sc-kgoBCf dzFgpK"
+          />Spend Bill Gates' Money
+        </h1>
+        <div id="fund-total-wrap" data-fund-total="90000000000">
+          $ 90000000000 left
+        </div>
+
+        <div class="products">
+          {% for product in products%}
+          <div class="product-wrapper">
+            <img src="{{product.product_img_url}}" class="product-img" />
+            <div class="product-title">{{product.product_name}}</div>
+            <div class="product-price">${{product.unit_price}}</div>
+            <div
+              class=""
+              data-key="{{product.product_name}}"
+              data-price="{{product.unit_price}}"
+            >
+              <button class="product-sell">Sell</button>
+              <input
+                pattern="\d*"
+                type="number"
+                id="{{product.product_name}}"
+                class="product-input"
+                value="0"
+              />
+              <button class="product-buy">
+                Buy
+              </button>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+        <div class="">
+          <div>Your Shopping Cart</div>
+          <div class="shopping-cart">
+            <ul></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

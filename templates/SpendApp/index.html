@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
 
-{product_dict['Water']}
-
 <html>
   <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -10,7 +8,7 @@
       $(document).ready(function() {});
     </script>
     <script src="{%static 'scripts\script.js'%}"></script>
-    <link rel="stylesheet" href="{%static 'css\style.css'%}">
+    <link rel="stylesheet" href="{%static 'css\style.css'%}" />
   </head>
 
   <body>
@@ -23,8 +21,8 @@
             class="sc-kgoBCf dzFgpK"
           />Spend Bill Gates' Money
         </h1>
-        <div id="fund-total-wrap" data-fund-total="86443800000">
-          $86,443,800,000 left
+        <div id="fund-total-wrap" data-fund-total="{fund_total}">
+          ${fund_total} left
         </div>
         <div class="products">
           <div class="product-wrapper">
